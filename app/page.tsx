@@ -448,6 +448,22 @@ function BackgroundMusic() {
 const HERO_VIDEO = "/assets/hero.mp4";
 const ENVELOPE_VIDEO = "/assets/envelope.mp4";
 
+function Fleur({ className }: { className: string }) {
+  return (
+    <svg className={className} viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M20 4c3 5 3 10 0 15-3-5-3-10 0-15zM20 19c-4-4-10-5-15-2 4 4 10 5 15 2zM20 19c4-4 10-5 15-2-4 4-10 5-15 2zM20 19v15M15 31h10" />
+    </svg>
+  );
+}
+
+function Sprig() {
+  return (
+    <svg className="env-sprig" viewBox="0 0 30 40" aria-hidden="true">
+      <path d="M24 38C18 28 14 18 15 4M15 10c-5-1-8-4-8-7 4 0 7 3 8 7zM15 18c-5 0-9-3-10-6 5-1 8 2 10 6zM16 26c-5 1-9-1-11-4 5-2 9 0 11 4zM15 12c4-2 6-6 6-9-4 1-6 5-6 9zM15 20c4-2 7-5 7-9-4 1-7 5-7 9z" />
+    </svg>
+  );
+}
+
 function Envelope({ onOpen }: { onOpen: () => void }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [percent, setPercent] = useState(0);
@@ -496,8 +512,14 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
   return (
     <div className={`envelope is-${stage}`} onClick={open} role="button" tabIndex={0} aria-label="Open the invitation" onKeyDown={(event) => (event.key === "Enter" || event.key === " ") && open()}>
       <video ref={videoRef} className="envelope-media" poster="/assets/envelope-poster.jpg" playsInline preload="none" aria-hidden="true" onTimeUpdate={onTimeUpdate} onEnded={finish} />
-      <p className="envelope-name is-top">Harini</p>
-      <p className="envelope-name is-bottom">Kevin</p>
+      <div className="envelope-title">
+        <Fleur className="env-fleur" />
+        <p className="env-ruled">The wedding of</p>
+        <p className="env-script"><Sprig />Harini</p>
+        <p className="env-ruled is-and">and</p>
+        <p className="env-script"><Sprig />Kevin</p>
+      </div>
+      <Fleur className="env-drop" />
       <p className={`envelope-cta ${ready ? "is-ready" : ""}`}>
         {ready ? "Tap to open" : <>Preparing your invitation <span>{percent}%</span></>}
       </p>

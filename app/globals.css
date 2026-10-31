@@ -885,7 +885,7 @@ p { text-wrap: pretty; }
 }
 
 .vh-names span {
-  font-family: "Beau Rivage", "Great Vibes", cursive;
+  font-family: "Beau Rivage", cursive;
   font-size: clamp(3.7rem, 8.8svh, 6rem);
   font-weight: 400;
   line-height: 1.02;
@@ -1916,7 +1916,7 @@ html.is-sealed body { overflow: hidden; }
 .env-script {
   position: relative;
   margin: .12em 0 0;
-  font-family: "Great Vibes", cursive;
+  font-family: "Beau Rivage", cursive;
   font-size: calc(var(--env-w) * .155);
   line-height: 1.05;
   mix-blend-mode: multiply;

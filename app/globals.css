@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Great+Vibes&family=Ovo&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Ovo&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -1944,3 +1944,7 @@ html.is-sealed body { overflow: hidden; }
 .env-ruled { font-size: calc(var(--env-w) * .03); }
 .env-ruled.is-and { width: 42%; margin: .05em auto 0; font-size: calc(var(--env-w) * .026); }
 .env-drop { top: calc(50% + var(--env-w) * .175); }
+.env-script { font-family: "Beau Rivage", cursive; font-size: calc(var(--env-w) * .135); line-height: 1.1; }
+.env-ruled { font-size: calc(var(--env-w) * .029); letter-spacing: .26em; }
+.env-ruled.is-and { font-size: calc(var(--env-w) * .025); }
+.env-script { font-size: calc(var(--env-w) * .152); }

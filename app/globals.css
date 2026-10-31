@@ -1937,3 +1937,10 @@ html.is-sealed body { overflow: hidden; }
 .env-script { width: fit-content; margin-inline: auto; padding-left: .22em; }
 .env-sprig { top: 22%; left: -.12em; width: .3em; }
 .env-script + .env-ruled + .env-script .env-sprig { left: -.08em; }
+/* the flap's V narrows fast toward the seal, so the names sit high where it is widest */
+.envelope-title { bottom: calc(50% + var(--env-w) * .3); width: calc(var(--env-w) * .62); }
+.env-script { font-size: calc(var(--env-w) * .128); padding-left: 0; }
+.env-sprig { display: none; }
+.env-ruled { font-size: calc(var(--env-w) * .03); }
+.env-ruled.is-and { width: 42%; margin: .05em auto 0; font-size: calc(var(--env-w) * .026); }
+.env-drop { top: calc(50% + var(--env-w) * .175); }

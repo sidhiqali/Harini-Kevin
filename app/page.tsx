@@ -355,6 +355,7 @@ function ScratchCard({
 
 // Playing while still downloading stutters, so every video is fetched whole (as a blob) behind the envelope.
 const VIDEO_URLS = new Map<string, Promise<string>>();
+const loadedUrls = new Map<string, string>();
 const videoProgress = new Map<string, [number, number]>();
 
 function loadVideo(src: string, onProgress?: () => void) {
@@ -375,20 +376,25 @@ function loadVideo(src: string, onProgress?: () => void) {
           videoProgress.set(src, [loaded, total || loaded]);
           onProgress?.();
         }
-        return URL.createObjectURL(new Blob(chunks as BlobPart[], { type: "video/mp4" }));
+        return URL.createObjectURL(new Blob(chunks as BlobPart[], { type: response.headers.get("content-type") || "video/mp4" }));
       })
-      .catch(() => src);
+      .catch(() => src)
+      .then((url) => {
+        loadedUrls.set(src, url);
+        return url;
+      });
     VIDEO_URLS.set(src, url);
   }
   return url;
 }
 
+const MUSIC = "/assets/wedding-music.m4a";
 let music: HTMLAudioElement | null = null;
 
 // iOS only lets audio start from inside the tap handler, so the envelope tap calls this directly.
 function startMusic() {
   if (music) return;
-  const audio = new Audio("/assets/wedding-music.m4a");
+  const audio = new Audio(loadedUrls.get(MUSIC) ?? MUSIC);
   audio.loop = true;
   audio.volume = 0.45;
   audio.play().catch(() => undefined);
@@ -475,7 +481,7 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
     history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
     document.documentElement.classList.add("is-sealed");
-    const sources = [ENVELOPE_VIDEO, HERO_VIDEO, ...GUEST_EVENTS.map((event) => event.couple).filter((src) => src.endsWith(".mp4"))];
+    const sources = [ENVELOPE_VIDEO, MUSIC, HERO_VIDEO, ...GUEST_EVENTS.map((event) => event.couple).filter((src) => src.endsWith(".mp4"))];
     const update = () => {
       let loaded = 0;
       let total = 0;

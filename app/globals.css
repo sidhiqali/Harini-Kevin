@@ -2052,6 +2052,46 @@ html.is-sealed body { overflow: hidden; }
   .venue-section { padding-block: 8rem; }
   .venue-list { grid-template-columns: repeat(2, minmax(0, 390px)); gap: 1.6rem; }
 }
+/* Bring the florals into the plaques and remove the empty poster-like gaps on mobile. */
+@media (max-width: 899px) {
+  .venue-section { padding-top: 4.8rem; padding-bottom: 5.2rem; }
+  .venue-section .section-title { margin-bottom: 1.25rem; }
+  .venue-list { gap: 1rem; }
+}
+.venue-card {
+  isolation: isolate;
+  overflow: hidden;
+  padding: 2.05rem 1.35rem 1.75rem;
+}
+.venue-card::before {
+  display: block;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  border-radius: 0;
+  background: url("/assets/floral-tr.webp") top -16px right -18px / 142px auto no-repeat;
+  opacity: .29;
+}
+.venue-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: -34px;
+  left: -36px;
+  width: 138px;
+  height: 154px;
+  background: url("/assets/floral-tr.webp") center / contain no-repeat;
+  opacity: .26;
+  transform: rotate(180deg) scaleX(-1);
+  pointer-events: none;
+}
+.venue-card > * { position: relative; z-index: 1; }
+.venue-flourish { width: 118px; margin-bottom: .55rem; }
+.venue-events { margin-bottom: .15rem; }
+.venue-card h3 { margin-top: .24rem; font-size: clamp(2.45rem, 10.5vw, 3.15rem); }
+.venue-area { margin-top: .16rem; }
+.venue-date { margin-top: .08rem; }
+.venue-card .ep-map { margin-top: 1.15rem; }
 .ep-hosts { margin:.8rem 0 0; color:rgba(243,233,214,.92); font-family:"Cormorant Garamond", serif; font-size:1rem; font-style:italic; line-height:1.3; }
 .ep-hosts span { display:block; margin-bottom:.16rem; color:#d9b878; font-family:"Cinzel", serif; font-size:.57rem; font-style:normal; font-weight:600; letter-spacing:.23em; text-transform:uppercase; }
 .ep-night .ep-hosts { max-width:20rem; }

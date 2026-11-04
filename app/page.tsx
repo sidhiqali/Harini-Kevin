@@ -842,9 +842,6 @@ function Venue() {
               <h3>{venue.venue}</h3>
               <p className="venue-area">{venue.area}</p>
               <p className="venue-date">{venue.date}</p>
-              <div className="venue-map">
-                <iframe title={`Map of ${venue.venue}`} src={`https://www.google.com/maps?q=${mapsQuery(venue)}&output=embed`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-              </div>
               <a className="ep-map" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery(venue)}`}>⌖ Get directions</a>
             </article>
           ))}

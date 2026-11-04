@@ -2016,6 +2016,42 @@ html.is-sealed body { overflow: hidden; }
     linear-gradient(rgba(228, 238, 240, .11), rgba(228, 238, 240, .11)),
     #f3eee5 url("/assets/reception-bg.webp") center bottom / cover no-repeat;
 }
+/* Venues are invitation plaques, not embedded-map previews. */
+.venue-section {
+  padding-top: 6.5rem;
+  padding-bottom: 7rem;
+  background:
+    radial-gradient(ellipse 80% 34% at 50% 0, rgba(242, 235, 220, .94), transparent 74%),
+    linear-gradient(180deg, #f4ecdf 0%, #ead9c1 100%);
+}
+.venue-section .section-title { margin-bottom: 2.35rem; }
+.venue-list {
+  gap: 1.35rem;
+  margin-top: 0;
+}
+.venue-card {
+  min-height: 0;
+  padding: 2.35rem 1.5rem 2rem;
+  border-color: rgba(163, 112, 38, .52);
+  outline-color: rgba(185, 142, 76, .27);
+  background: linear-gradient(145deg, rgba(255, 252, 246, .97), rgba(249, 238, 219, .94));
+  box-shadow: 0 18px 34px -30px rgba(74, 45, 24, .58);
+}
+.venue-flourish { width: 132px; margin-bottom: .8rem; }
+.venue-events { margin: 0; font-size: .61rem; letter-spacing: .27em; }
+.venue-card h3 { margin-top: .42rem; font-size: clamp(2.65rem, 11.4vw, 3.35rem); }
+.venue-area { margin-top: .3rem; font-size: 1.08rem; }
+.venue-date { margin-top: .2rem; font-size: .9rem; }
+.venue-card .ep-map {
+  min-width: 180px;
+  justify-content: center;
+  margin: 1.45rem auto 0;
+  padding: .5rem 1.2rem;
+}
+@media (min-width: 900px) {
+  .venue-section { padding-block: 8rem; }
+  .venue-list { grid-template-columns: repeat(2, minmax(0, 390px)); gap: 1.6rem; }
+}
 .ep-hosts { margin:.8rem 0 0; color:rgba(243,233,214,.92); font-family:"Cormorant Garamond", serif; font-size:1rem; font-style:italic; line-height:1.3; }
 .ep-hosts span { display:block; margin-bottom:.16rem; color:#d9b878; font-family:"Cinzel", serif; font-size:.57rem; font-style:normal; font-weight:600; letter-spacing:.23em; text-transform:uppercase; }
 .ep-night .ep-hosts { max-width:20rem; }

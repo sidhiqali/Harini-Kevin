@@ -1960,31 +1960,50 @@ html.is-sealed body { overflow: hidden; }
 .ep-night .twinkle-field { opacity: .42; mix-blend-mode: screen; }
 .ep-night::before {
   z-index: 1;
-  background:
-    linear-gradient(112deg, transparent 30%, rgba(151, 211, 244, .24) 43%, rgba(214, 239, 255, .07) 49%, transparent 61%) center / 132% 100% no-repeat,
-    linear-gradient(68deg, transparent 34%, rgba(177, 224, 246, .18) 47%, rgba(224, 246, 255, .06) 52%, transparent 65%) center / 132% 100% no-repeat,
-    radial-gradient(ellipse 58% 22% at 50% 1%, rgba(172, 220, 245, .28), transparent 70%),
-    linear-gradient(180deg, transparent 16%, rgba(0, 0, 0, .32) 52%, transparent 78%);
+  background: linear-gradient(180deg, transparent 16%, rgba(0, 0, 0, .22) 54%, transparent 78%);
+}
+.bash-spotlights {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: min(72svh, 680px);
+  overflow: hidden;
+  pointer-events: none;
+}
+.bash-spotlights i {
+  position: absolute;
+  top: -3%;
+  width: 48%;
+  height: 88%;
+  display: block;
+  background: linear-gradient(180deg, rgba(214, 240, 255, .28), rgba(133, 202, 240, .11) 36%, transparent 91%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(1.5px);
   mix-blend-mode: screen;
-  opacity: .46;
+  opacity: .66;
   transform-origin: 50% 0;
   will-change: transform, opacity;
-  animation: bash-light-sweep 8s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+  animation: bash-spotlight-sway 5.6s cubic-bezier(.42, 0, .58, 1) infinite alternate;
 }
+.bash-spotlights i:nth-child(1) { left: 2%; animation-delay: -1.8s; }
+.bash-spotlights i:nth-child(2) { left: 26%; height: 96%; animation-delay: -.5s; }
+.bash-spotlights i:nth-child(3) { right: 2%; animation-delay: -2.9s; }
+.ep-night .ep-copy { position: relative; z-index: 4; }
+.ep-night .ep-video { z-index: 3; }
 .ep-night .ep-inner { padding-top:184px; }
-.ep-night .ep-copy { position: relative; z-index: 3; text-shadow: 0 2px 12px rgba(0, 0, 0, .88); }
+.ep-night .ep-copy { position: relative; z-index: 4; text-shadow: 0 2px 12px rgba(0, 0, 0, .88); }
 .ep-night .ep-video {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   background: transparent;
   mix-blend-mode: screen;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 87%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 87%, transparent 100%);
 }
-@keyframes bash-light-sweep {
-  0% { opacity: .20; transform: translateX(-9%) scaleX(1.08); }
-  48% { opacity: .58; }
-  100% { opacity: .32; transform: translateX(9%) scaleX(.94); }
+@keyframes bash-spotlight-sway {
+  0% { opacity: .26; transform: rotate(-9deg) scaleX(.88); }
+  48% { opacity: .72; }
+  100% { opacity: .38; transform: rotate(10deg) scaleX(1.08); }
 }
 /* Keep the wedding and reception elegant, but take the overall warmth down a notch. */
 .ep-ivory {

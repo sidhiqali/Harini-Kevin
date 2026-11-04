@@ -2055,7 +2055,9 @@ html.is-sealed body { overflow: hidden; }
 /* Bring the florals into the plaques and remove the empty poster-like gaps on mobile. */
 @media (max-width: 899px) {
   .venue-section { padding-top: 4.8rem; padding-bottom: 5.2rem; }
-  .venue-section .section-title { margin-bottom: 1.25rem; }
+  /* Keep the title and its first plaque visually connected on a phone. */
+  .venue-section .section-title { margin-bottom: .45rem; }
+  .venue-section .section-title .ornament-divider { padding: .85rem 0 .55rem; }
   .venue-list { gap: 1rem; }
 }
 .venue-card {
@@ -2076,13 +2078,13 @@ html.is-sealed body { overflow: hidden; }
   content: "";
   position: absolute;
   z-index: 0;
-  bottom: -34px;
-  left: -36px;
-  width: 138px;
-  height: 154px;
-  background: url("/assets/floral-tr.webp") center / contain no-repeat;
+  bottom: -2px;
+  left: -2px;
+  width: 142px;
+  height: 152px;
+  background: url("/assets/floral-bl.webp") left bottom / contain no-repeat;
   opacity: .26;
-  transform: rotate(180deg) scaleX(-1);
+  transform: none;
   pointer-events: none;
 }
 .venue-card > * { position: relative; z-index: 1; }

@@ -353,7 +353,9 @@ function ScratchCard({
   );
 }
 
-// Playing while still downloading stutters, so every video is fetched whole (as a blob) behind the envelope.
+// Playing while still downloading stutters, so a video is fetched whole (as a blob)
+// immediately before it is needed. Keeping this lazy is important on phones: loading
+// every film, song and animation behind the closed envelope can crash the renderer.
 const VIDEO_URLS = new Map<string, Promise<string>>();
 const loadedUrls = new Map<string, string>();
 const videoProgress = new Map<string, [number, number]>();
@@ -481,7 +483,9 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
     history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
     document.documentElement.classList.add("is-sealed");
-    const sources = [ENVELOPE_VIDEO, MUSIC, HERO_VIDEO, ...GUEST_EVENTS.map((event) => event.couple).filter((src) => src.endsWith(".mp4"))];
+    // The sealed view only needs its own short opening film. The hero, music and
+    // event animation intentionally wait until the invitation has been opened.
+    const sources = [ENVELOPE_VIDEO];
     const update = () => {
       let loaded = 0;
       let total = 0;
@@ -766,18 +770,19 @@ function useInViewPlayback() {
   return ref;
 }
 
-function PanelVideo({ src }: { src: string }) {
+function PanelVideo({ src, enabled }: { src: string; enabled: boolean }) {
   const ref = useInViewPlayback();
   useEffect(() => {
+    if (!enabled) return;
     loadVideo(src).then((url) => {
       const video = ref.current;
       if (video && !video.src) video.src = url;
     });
-  }, [ref, src]);
-  return <video ref={ref} className="ep-couple ep-video" poster={src.replace(".mp4", ".jpg")} muted loop playsInline aria-hidden="true" />;
+  }, [enabled, ref, src]);
+  return <video ref={ref} className="ep-couple ep-video" poster={src.replace(".mp4", ".jpg")} muted loop playsInline preload="none" aria-hidden="true" />;
 }
 
-function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
+function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enabled: boolean }) {
   return (
     <article className={`ep ep-${event.look}`} id={`event-${event.slug}`}>
       {event.look === "night" && <Twinkles count={34} />}
@@ -808,7 +813,7 @@ function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
           </div>
         </div>
         {event.couple.endsWith(".mp4") ? (
-          <PanelVideo src={event.couple} />
+          <PanelVideo src={event.couple} enabled={enabled} />
         ) : (
           <img className="ep-couple reveal-on-scroll" src={event.couple} alt={`Harini and Kevin, ${event.name}`} loading="lazy" />
         )}
@@ -817,11 +822,11 @@ function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
   );
 }
 
-function Events() {
+function Events({ enabled }: { enabled: boolean }) {
   return (
     <section id="events" className="event-panels">
       {GUEST_EVENTS.map((event) => (
-        <EventPanel event={event} key={event.slug} />
+        <EventPanel event={event} enabled={enabled} key={event.slug} />
       ))}
     </section>
   );
@@ -907,7 +912,7 @@ export default function Home() {
       <Hero live={opened} />
       <Blessings />
       <SaveTheDate />
-      <Events />
+      <Events enabled={opened} />
       <Venue />
       <ThankYou />
     </main>

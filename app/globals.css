@@ -1953,7 +1953,7 @@ html.is-sealed body { overflow: hidden; }
 .ep-night {
   background:
     linear-gradient(180deg, rgba(0, 4, 9, .13), rgba(0, 3, 8, .24)),
-    url("/assets/bash-night-tunnel-v2.png") center top / cover no-repeat,
+    url("/assets/bash-night-tunnel.webp") center top / cover no-repeat,
     #020407;
 }
 .ep-night::after { display: none; }
@@ -1962,32 +1962,6 @@ html.is-sealed body { overflow: hidden; }
   z-index: 1;
   background: linear-gradient(180deg, transparent 16%, rgba(0, 0, 0, .22) 54%, transparent 78%);
 }
-.bash-spotlights {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 2;
-  height: min(72svh, 680px);
-  overflow: hidden;
-  pointer-events: none;
-}
-.bash-spotlights i {
-  position: absolute;
-  top: -3%;
-  width: 48%;
-  height: 88%;
-  display: block;
-  background: linear-gradient(180deg, rgba(214, 240, 255, .28), rgba(133, 202, 240, .11) 36%, transparent 91%);
-  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
-  filter: blur(1.5px);
-  mix-blend-mode: screen;
-  opacity: .66;
-  transform-origin: 50% 0;
-  will-change: transform, opacity;
-  animation: bash-spotlight-sway 5.6s cubic-bezier(.42, 0, .58, 1) infinite alternate;
-}
-.bash-spotlights i:nth-child(1) { left: 2%; animation-delay: -1.8s; }
-.bash-spotlights i:nth-child(2) { left: 26%; height: 96%; animation-delay: -.5s; }
-.bash-spotlights i:nth-child(3) { right: 2%; animation-delay: -2.9s; }
 .ep-night .ep-copy { position: relative; z-index: 4; }
 .ep-night .ep-video { z-index: 3; }
 .ep-night .ep-inner { padding-top:184px; }
@@ -2000,20 +1974,13 @@ html.is-sealed body { overflow: hidden; }
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 87%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 87%, transparent 100%);
 }
-@keyframes bash-spotlight-sway {
-  0% { opacity: .26; transform: rotate(-9deg) scaleX(.88); }
-  48% { opacity: .72; }
-  100% { opacity: .38; transform: rotate(10deg) scaleX(1.08); }
-}
 /* Keep the wedding and reception elegant, but take the overall warmth down a notch. */
 .ep-ivory {
   background:
-    linear-gradient(rgba(229, 239, 242, .12), rgba(229, 239, 242, .12)),
     #f5f2ec url("/assets/wedding-bg.webp") center bottom / cover no-repeat;
 }
 .ep-champagne {
   background:
-    linear-gradient(rgba(228, 238, 240, .11), rgba(228, 238, 240, .11)),
     #f3eee5 url("/assets/reception-bg.webp") center bottom / cover no-repeat;
 }
 /* Venues are invitation plaques, not embedded-map previews. */
@@ -2109,4 +2076,172 @@ html.is-sealed body { overflow: hidden; }
   .ep-night .ep-video { width:min(76vw, 350px); object-position:50% 82%; }
   .ep-ivory .ep-inner, .ep-champagne .ep-inner { padding-inline:10%; }
   .ep-ivory .ep-couple, .ep-champagne .ep-couple { width:min(74vw, 350px); }
+}
+
+/* Cool tone: berry scripts and rose-gold labels on blush ivory, instead of amber on beige (backgrounds are colour-graded to match). */
+:root { --berry: #7b1d3b; --rose-gold: #9a7458; }
+.section-title:not(.is-light) h2,
+.ep-title,
+.venue-card h3 { color: var(--berry); }
+.ep-eyebrow,
+.venue-events,
+.blessing p,
+.blessings-section .hero-name p:first-child,
+.section-title:not(.is-light) .eyebrow { color: var(--rose-gold); }
+.venue-no { color: #b48f7c; }
+.ep-dress { color: var(--rose-gold); border-color: rgba(154, 116, 88, .5); }
+.ep-schedule div { border-color: rgba(154, 116, 88, .24); }
+.venue-section {
+  background:
+    radial-gradient(ellipse 80% 34% at 50% 0, rgba(251, 244, 243, .95), transparent 74%),
+    linear-gradient(180deg, #f8f0ee 0%, #efe1e0 100%);
+}
+.venue-card { background: linear-gradient(145deg, rgba(255, 252, 251, .97), rgba(250, 239, 238, .94)); border-color: rgba(154, 116, 88, .45); }
+
+/* Bash decor: light curtain, deco frame and a lit dance floor. Only opacity/transform animate. */
+.bash-decor { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.bash-strands,
+.bash-strands::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: min(92vw, 520px);
+  background: url("/assets/bash-strands-a.webp") top center / 100% 100% no-repeat;
+  mix-blend-mode: screen;
+}
+.bash-strands::after {
+  content: "";
+  background-image: url("/assets/bash-strands-b.webp");
+  opacity: 0;
+  animation: bash-twinkle 3.2s ease-in-out infinite alternate;
+}
+.bash-strands { opacity: .85; animation: bash-twinkle-a 3.2s ease-in-out infinite alternate; }
+@keyframes bash-twinkle { to { opacity: .9; } }
+@keyframes bash-twinkle-a { to { opacity: .45; } }
+
+.bash-floor {
+  position: absolute;
+  right: -10%;
+  bottom: 0;
+  left: -10%;
+  height: 34%;
+  background: radial-gradient(ellipse 50% 42% at 50% 78%, rgba(176, 214, 255, .2), rgba(120, 160, 230, .08) 55%, transparent 75%);
+}
+/* disco-ball reflections drifting across the floor */
+.bash-floor i {
+  position: absolute;
+  inset: 20% -30% 0;
+  background:
+    radial-gradient(circle, rgba(235, 244, 255, .7) 0 1.4px, transparent 2.4px) 0 0 / 46px 31px,
+    radial-gradient(circle, rgba(255, 236, 214, .5) 0 1.1px, transparent 2.1px) 19px 13px / 61px 43px;
+  -webkit-mask-image: radial-gradient(ellipse 45% 55% at 50% 70%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 45% 55% at 50% 70%, #000 30%, transparent 75%);
+  animation: bash-flecks 14s linear infinite;
+  will-change: transform;
+}
+@keyframes bash-flecks { to { transform: translateX(-92px); } }
+
+.bash-frame { position: absolute; inset: 12px; border: 1px solid rgba(217, 184, 120, .32); }
+.bash-frame::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(217, 184, 120, .14); }
+.bash-frame svg { position: absolute; width: 46px; height: 46px; fill: none; stroke: rgba(226, 196, 132, .8); stroke-width: 1.2; }
+.bash-frame .is-tl { top: -1px; left: -1px; }
+.bash-frame .is-tr { top: -1px; right: -1px; transform: scaleX(-1); }
+.bash-frame .is-bl { bottom: -1px; left: -1px; transform: scaleY(-1); }
+.bash-frame .is-br { right: -1px; bottom: -1px; transform: scale(-1); }
+
+@media (min-width: 900px) {
+  .bash-strands, .bash-strands::after { height: 62svh; background-size: auto 100%; background-repeat: repeat-x; }
+  .bash-frame { inset: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bash-strands, .bash-strands::after, .bash-floor i { animation: none; }
+}
+
+/* Party video sits above every decor layer; the cutout's own alpha shows the decor around it. */
+.ep-night .ep-video {
+  z-index: 6;
+  mix-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent);
+  mask-image: linear-gradient(to bottom, #000 88%, transparent);
+}
+
+/* Lights anchored to the disco balls painted in the tunnel art: the art is `center top / cover`
+   at 941×1672, so one source px is --s and positions follow the same scaling on every screen. */
+.bash-decor { container-type: size; }
+.bash-ball {
+  --s: max(100cqw / 941, 100cqh / 1672);
+  position: absolute;
+  top: calc(var(--y) * var(--s));
+  left: calc(50cqw + (var(--x) - 470.5) * var(--s));
+  width: 0;
+  height: 0;
+}
+.bash-ball.is-left { --x: 259; --y: 130; --r: 38; --tone: 214, 232, 255; }
+.bash-ball.is-mid { --x: 475; --y: 76; --r: 50; --tone: 255, 226, 170; }
+.bash-ball.is-right { --x: 678; --y: 130; --r: 37; --tone: 214, 232, 255; }
+.bash-ball .halo {
+  position: absolute;
+  width: calc(var(--r) * 6 * var(--s));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--tone), .42), rgba(var(--tone), .12) 38%, transparent 70%);
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  animation: ball-pulse 2.8s ease-in-out infinite alternate;
+}
+.bash-ball .glint {
+  position: absolute;
+  top: calc(var(--r) * -.45 * var(--s));
+  left: calc(var(--r) * -.4 * var(--s));
+  width: calc(var(--r) * 1.5 * var(--s));
+  aspect-ratio: 1;
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(255, 255, 255, .95) 50%, transparent 53%),
+    linear-gradient(0deg, transparent 47%, rgba(255, 255, 255, .95) 50%, transparent 53%);
+  -webkit-mask-image: radial-gradient(circle, #000 8%, transparent 62%);
+  mask-image: radial-gradient(circle, #000 8%, transparent 62%);
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  animation: ball-glint 3.4s ease-in-out infinite;
+}
+.bash-ball.is-mid .glint { animation-delay: -1.2s; }
+.bash-ball.is-right .glint { animation-delay: -2.3s; }
+.bash-ball .beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(62cqw, 520px);
+  height: min(118cqw, 900px);
+  background: linear-gradient(180deg, rgba(var(--tone), .34), rgba(var(--tone), .1) 45%, transparent 92%);
+  clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  transform-origin: 50% 0;
+  translate: -50% 0;
+  animation: ball-sweep 6.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+.bash-ball .beam.is-b { width: min(40cqw, 340px); opacity: .7; animation-duration: 8.2s; animation-direction: alternate-reverse; }
+.bash-ball.is-left .beam { --from: 4deg; --to: 30deg; }
+.bash-ball.is-mid .beam { --from: -16deg; --to: 16deg; animation-delay: -2s; }
+.bash-ball.is-right .beam { --from: -4deg; --to: -30deg; }
+@keyframes ball-sweep {
+  0% { rotate: var(--from); opacity: .45; }
+  50% { opacity: 1; }
+  100% { rotate: var(--to); opacity: .55; }
+}
+@keyframes ball-pulse { from { opacity: .65; scale: .92; } to { opacity: 1; scale: 1.06; } }
+@keyframes ball-glint {
+  0%, 62%, 100% { opacity: 0; rotate: 0deg; scale: .4; }
+  78% { opacity: 1; rotate: 45deg; scale: 1; }
+}
+/* soft lift behind the title so it reads against the beams */
+.ep-night .ep-copy::before {
+  content: "";
+  position: absolute;
+  inset: -8% -14% 30%;
+  z-index: -1;
+  background: radial-gradient(ellipse 55% 45% at 50% 40%, rgba(2, 4, 9, .55), transparent 75%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bash-ball .halo, .bash-ball .glint, .bash-ball .beam { animation: none; }
 }

@@ -9,8 +9,8 @@ import {
   useState,
 } from "react";
 
-// Harini invitation. Times are IST; the same slots live in public/calendar/*.ics for Apple and Outlook.
-const EVENTS = [
+// Times are IST; the same slots live in public/calendar/*.ics for Apple and Outlook. Defaults are Harini's side.
+const HARINI_EVENTS = [
   {
     name: "Pre Wedding Bash",
     date: "Friday, 4 December 2026",
@@ -18,7 +18,7 @@ const EVENTS = [
     venue: "Mogra Hall",
     area: "Rajiv Gandhi College",
     theme: "Dress code: Suits & Shimmer",
-    note: "Join us for an unforgettable celebration—an evening of rhythm, glamour and a dance floor full of memories.",
+    note: "Join us for an unforgettable celebration, an evening of rhythm, a touch of glamour and a dance floor full of memories.",
     hostedBy: "Alpa & Hasit Mehta · Maitri & Pratik Shah",
     schedule: [["Celebration begins", "7:00 PM"], ["Dinner", "to follow"]],
     look: "night",
@@ -49,7 +49,7 @@ const EVENTS = [
     venue: "Hiravati Hall",
     area: "Santacruz, Mumbai",
     theme: "",
-    note: "Bless us with your presence at our wedding reception.",
+    note: "Bless us with your presence for our wedding reception.",
     schedule: [["Reception", "7:30 PM"], ["Dinner", "to follow"]],
     look: "champagne",
     couple: "/assets/reception-couple.webp",
@@ -58,6 +58,23 @@ const EVENTS = [
     end: "2026-12-05T23:30",
   },
 ];
+
+// ?side=kevin: the groom's family hosts the bash and their baraat leaves from home
+const KEVIN_SIDE = new URLSearchParams(window.location.search).get("side") === "kevin";
+const EVENTS = HARINI_EVENTS.map((event) => {
+  if (!KEVIN_SIDE) return { ...event, calendar: event.slug };
+  if (event.slug === "bash") return { ...event, hostedBy: "Janvi Chheda", calendar: event.slug };
+  if (event.slug === "wedding") {
+    return {
+      ...event,
+      time: "Baraat 2:30 PM from home · Hast Melap 5:30 PM",
+      schedule: [["Baraat from home", "2:30 PM"], ["Hast Melap", "5:30 PM"]],
+      start: "2026-12-05T14:30",
+      calendar: "wedding-kevin",
+    };
+  }
+  return { ...event, calendar: event.slug };
+});
 
 // ponytail: ?k= only hides events client-side; anyone editing the URL can switch tier
 const INVITES: Record<string, string[]> = {
@@ -770,23 +787,60 @@ function useInViewPlayback() {
   return ref;
 }
 
+// The cutout has a real alpha channel so decor can sit behind it. WebKit (every iOS browser, desktop Safari)
+// only renders alpha from HEVC; Chrome/Firefox only from VP9 WebM.
+const ALPHA_HEVC = /iP(hone|ad|od)/.test(navigator.userAgent) || (/Safari/.test(navigator.userAgent) && !/Chrome|Chromium|Edg|Android/.test(navigator.userAgent));
+const alphaVideo = (src: string) => src.replace(".mp4", ALPHA_HEVC ? "-hevc.mp4" : ".webm");
+
 function PanelVideo({ src, enabled }: { src: string; enabled: boolean }) {
   const ref = useInViewPlayback();
   useEffect(() => {
     if (!enabled) return;
-    loadVideo(src).then((url) => {
+    loadVideo(alphaVideo(src)).then((url) => {
       const video = ref.current;
       if (video && !video.src) video.src = url;
     });
   }, [enabled, ref, src]);
-  return <video ref={ref} className="ep-couple ep-video" poster={src.replace(".mp4", ".jpg")} muted loop playsInline preload="none" aria-hidden="true" />;
+  return <video ref={ref} className="ep-couple ep-video" poster={src.replace(".mp4", ".webp")} muted loop playsInline preload="none" aria-hidden="true" />;
+}
+
+function DecoCorner({ className }: { className: string }) {
+  return (
+    <svg className={className} viewBox="0 0 60 60" aria-hidden="true">
+      <path d="M2 58V14C2 7 7 2 14 2h44M8 58V18c0-6 4-10 10-10h40M2 30h10M30 2v10" />
+      <path d="M8 8l14 14M14 8a16 16 0 0 0 0 16M8 14a16 16 0 0 1 16 0" />
+    </svg>
+  );
+}
+
+function BashDecor() {
+  return (
+    <div className="bash-decor" aria-hidden="true">
+      {["is-left", "is-mid", "is-right"].map((side) => (
+        <div className={`bash-ball ${side}`} key={side}>
+          <b className="beam is-a" />
+          <b className="beam is-b" />
+          <i className="halo" />
+          <i className="glint" />
+        </div>
+      ))}
+      <div className="bash-strands" />
+      <div className="bash-floor"><i /></div>
+      <div className="bash-frame">
+        <DecoCorner className="is-tl" />
+        <DecoCorner className="is-tr" />
+        <DecoCorner className="is-bl" />
+        <DecoCorner className="is-br" />
+      </div>
+    </div>
+  );
 }
 
 function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enabled: boolean }) {
   return (
     <article className={`ep ep-${event.look}`} id={`event-${event.slug}`}>
       {event.look === "night" && <Twinkles count={34} />}
-      {event.look === "night" && <div className="bash-spotlights" aria-hidden="true"><i /><i /><i /></div>}
+      {event.look === "night" && <BashDecor />}
       <div className="ep-inner">
         <div className="ep-copy reveal-on-scroll">
           <p className="ep-eyebrow">{event.date.replace(", ", " · ")}</p>
@@ -806,7 +860,7 @@ function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enable
               <summary>＋ Add to calendar</summary>
               <div>
                 <a href={googleCalendarUrl(event)} target="_blank" rel="noreferrer">Google Calendar</a>
-                <a href={`/calendar/${event.slug}.ics`}>iPhone / Outlook</a>
+                <a href={`/calendar/${event.calendar}.ics`}>iPhone / Outlook</a>
               </div>
             </details>
             <a className="ep-map" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery(event)}`} target="_blank" rel="noreferrer">⌖ Directions</a>

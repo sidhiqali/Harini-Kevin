@@ -6,11 +6,11 @@ METHOD:PUBLISH
 BEGIN:VEVENT
 UID:wedding-2026@harini-kevin-wedding
 DTSTAMP:20261030T000000Z
-DTSTART:20261205T100000Z
+DTSTART:20261205T103000Z
 DTEND:20261205T140000Z
 SUMMARY:The Wedding · Harini & Kevin
-LOCATION:Hiravati Banquet Hall\, Mumbai
-DESCRIPTION:Baraat 3:30 PM · Phera 5:30 PM. Dress code: Indian Traditional
+LOCATION:Hiravati Hall\, Santacruz\, Mumbai
+DESCRIPTION:Baraat welcome 4:00 PM · Hast Melap 5:30 PM. Dress code: Indian Traditional
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Tomorrow: The Wedding

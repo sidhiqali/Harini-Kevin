@@ -1,5 +1,4 @@
 import {
-  type CSSProperties,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
   type SyntheticEvent,
@@ -10,17 +9,18 @@ import {
   useState,
 } from "react";
 
-// Times are IST; the same slots live in public/calendar/*.ics for Apple and Outlook.
+// Harini invitation. Times are IST; the same slots live in public/calendar/*.ics for Apple and Outlook.
 const EVENTS = [
   {
     name: "Pre Wedding Bash",
     date: "Friday, 4 December 2026",
-    time: "7:00 PM onwards",
-    venue: "Mogra Banquet",
-    area: "Juhu Versova, Mumbai",
+    time: "7:00 PM onwards · followed by dinner",
+    venue: "Mogra Hall",
+    area: "Rajiv Gandhi College",
     theme: "Dress code: Suits & Shimmer",
-    note: "An evening of rhythm, a touch of glamour, great company and a dance floor full of memories.",
-    schedule: [["The party begins", "7 PM"]],
+    note: "Join us for an unforgettable celebration—an evening of rhythm, glamour and a dance floor full of memories.",
+    hostedBy: "Alpa & Hasit Mehta · Maitri & Pratik Shah",
+    schedule: [["Celebration begins", "7:00 PM"], ["Dinner", "to follow"]],
     look: "night",
     couple: "/assets/bash-twirl.mp4",
     slug: "bash",
@@ -30,31 +30,31 @@ const EVENTS = [
   {
     name: "The Wedding",
     date: "Saturday, 5 December 2026",
-    time: "Baraat 3:30 PM · Phera 5:30 PM",
-    venue: "Hiravati Banquet Hall",
-    area: "Mumbai",
+    time: "Baraat welcome 4:00 PM · Hast Melap 5:30 PM",
+    venue: "Hiravati Hall",
+    area: "Santacruz, Mumbai",
     theme: "Dress code: Indian Traditional",
-    note: "",
-    schedule: [["Baraat", "3:30 PM"], ["Hast Melap & Phera", "5:30 PM"]],
+    note: "With so much love, joy and gratitude in our hearts, we invite you to celebrate our marriage as we hold hands in a lifetime of friendship.",
+    schedule: [["Baraat welcome", "4:00 PM"], ["Hast Melap", "5:30 PM"]],
     look: "ivory",
     couple: "/assets/wedding-couple.webp",
     slug: "wedding",
-    start: "2026-12-05T15:30",
+    start: "2026-12-05T16:00",
     end: "2026-12-05T19:30",
   },
   {
     name: "The Reception",
     date: "Saturday, 5 December 2026",
-    time: "8:00 PM onwards",
-    venue: "Hiravati Banquet Hall",
-    area: "Mumbai",
+    time: "7:30 PM onwards · followed by dinner",
+    venue: "Hiravati Hall",
+    area: "Santacruz, Mumbai",
     theme: "",
-    note: "",
-    schedule: [["Reception", "8 PM"], ["Dinner", "to follow"]],
+    note: "Bless us with your presence at our wedding reception.",
+    schedule: [["Reception", "7:30 PM"], ["Dinner", "to follow"]],
     look: "champagne",
     couple: "/assets/reception-couple.webp",
     slug: "reception",
-    start: "2026-12-05T20:00",
+    start: "2026-12-05T19:30",
     end: "2026-12-05T23:30",
   },
 ];
@@ -781,6 +781,7 @@ function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
   return (
     <article className={`ep ep-${event.look}`} id={`event-${event.slug}`}>
       {event.look === "night" && <Twinkles count={34} />}
+      {event.look === "night" && <div className="bash-ceiling" aria-hidden="true"><i /><i /><i /><b /><b /></div>}
       <div className="ep-inner">
         <div className="ep-copy reveal-on-scroll">
           <p className="ep-eyebrow">{event.date.replace(", ", " · ")}</p>
@@ -794,6 +795,7 @@ function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
           <img className="ep-flourish" src="/assets/flourish-wide.webp" alt="" aria-hidden="true" />
           <p className="ep-venue">{event.venue}<span>{event.area}</span></p>
           {event.theme && <p className="ep-dress">{event.theme}</p>}
+          {"hostedBy" in event && event.hostedBy && <p className="ep-hosts"><span>With love</span>{event.hostedBy}</p>}
           <div className="ep-actions">
             <details className="event-calendar">
               <summary>＋ Add to calendar</summary>

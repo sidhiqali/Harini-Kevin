@@ -6,11 +6,11 @@ METHOD:PUBLISH
 BEGIN:VEVENT
 UID:reception-2026@harini-kevin-wedding
 DTSTAMP:20261030T000000Z
-DTSTART:20261205T143000Z
+DTSTART:20261205T140000Z
 DTEND:20261205T180000Z
 SUMMARY:The Reception · Harini & Kevin
-LOCATION:Hiravati Banquet Hall\, Mumbai
-DESCRIPTION:Followed by dinner
+LOCATION:Hiravati Hall\, Santacruz\, Mumbai
+DESCRIPTION:7:30 PM onwards followed by dinner
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Tomorrow: The Reception

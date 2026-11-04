@@ -1948,3 +1948,40 @@ html.is-sealed body { overflow: hidden; }
 .env-ruled { font-size: calc(var(--env-w) * .029); letter-spacing: .26em; }
 .env-ruled.is-and { font-size: calc(var(--env-w) * .025); }
 .env-script { font-size: calc(var(--env-w) * .152); }
+
+/* Harini's party gets a cool midnight ceiling; the copy remains in a clear mobile-safe column. */
+.ep-night {
+  background:
+    radial-gradient(ellipse 80% 32% at 50% 100%, rgba(30, 115, 118, .22), transparent 72%),
+    radial-gradient(circle at 12% 26%, rgba(46, 129, 132, .17), transparent 24%),
+    radial-gradient(circle at 88% 36%, rgba(73, 127, 147, .12), transparent 27%),
+    url("/assets/bash-lights.webp") top center / 100% auto no-repeat,
+    linear-gradient(180deg, #020407 0%, #04161e 58%, #071318 100%);
+}
+.bash-ceiling { position:absolute; inset:0 0 auto; z-index:1; height:154px; pointer-events:none; }
+.bash-ceiling i { position:absolute; top:18px; width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 31% 27%, #fff 0 5%, transparent 6%), repeating-linear-gradient(0deg, rgba(4,9,13,.45) 0 1px, transparent 1px 7px), repeating-linear-gradient(90deg, rgba(4,9,13,.42) 0 1px, transparent 1px 7px), conic-gradient(#747e84, #f4f4ed, #89969c, #e6eaeb, #59656c, #f6f6ef, #747e84); box-shadow:0 0 26px rgba(180,231,237,.34), inset -7px -8px 13px rgba(0,0,0,.42); opacity:.9; }
+.bash-ceiling i::before { content:""; position:absolute; bottom:44px; left:50%; width:1px; height:42px; background:linear-gradient(#d8e8e4, transparent); }
+.bash-ceiling i:nth-child(1) { left:9%; transform:scale(.78); }
+.bash-ceiling i:nth-child(2) { left:50%; top:8px; transform:translateX(-50%) scale(1.08); }
+.bash-ceiling i:nth-child(3) { right:9%; transform:scale(.7); }
+.bash-ceiling b { position:absolute; top:76px; width:72px; height:26px; border:1px solid rgba(241,222,166,.56); border-top:0; border-radius:0 0 36px 36px; box-shadow:inset 0 -8px 12px rgba(241,202,112,.24), 0 0 20px rgba(237,201,113,.18); opacity:.7; }
+.bash-ceiling b::before { content:""; position:absolute; bottom:26px; left:50%; width:1px; height:47px; background:linear-gradient(#ead39a, transparent); }
+.bash-ceiling b:nth-of-type(1) { left:25%; transform:scale(.7); }
+.bash-ceiling b:nth-of-type(2) { right:25%; transform:scale(.7); }
+.ep-night .ep-inner { padding-top:164px; }
+.ep-hosts { margin:.8rem 0 0; color:rgba(243,233,214,.92); font-family:"Cormorant Garamond", serif; font-size:1rem; font-style:italic; line-height:1.3; }
+.ep-hosts span { display:block; margin-bottom:.16rem; color:#d9b878; font-family:"Cinzel", serif; font-size:.57rem; font-style:normal; font-weight:600; letter-spacing:.23em; text-transform:uppercase; }
+.ep-night .ep-hosts { max-width:20rem; }
+
+@media (max-width: 480px) {
+  .ep-inner { padding:92px 1.2rem 0; }
+  .ep-copy { max-width:22rem; }
+  .ep-title { font-size:clamp(3rem, 13.2vw, 4.05rem); }
+  .ep-note { font-size:1.02rem; line-height:1.36; }
+  .ep-schedule div { padding:.4rem 0; font-size:1rem; }
+  .ep-night .ep-inner { padding-top:158px; }
+  .ep-night .ep-copy { max-width:21rem; }
+  .ep-night .ep-video { width:min(76vw, 350px); }
+  .ep-ivory .ep-inner, .ep-champagne .ep-inner { padding-inline:10%; }
+  .ep-ivory .ep-couple, .ep-champagne .ep-couple { width:min(74vw, 350px); }
+}

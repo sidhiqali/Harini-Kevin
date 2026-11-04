@@ -781,7 +781,6 @@ function EventPanel({ event }: { event: (typeof EVENTS)[number] }) {
   return (
     <article className={`ep ep-${event.look}`} id={`event-${event.slug}`}>
       {event.look === "night" && <Twinkles count={34} />}
-      {event.look === "night" && <div className="bash-ceiling" aria-hidden="true"><i /><i /><i /><b /><b /></div>}
       <div className="ep-inner">
         <div className="ep-copy reveal-on-scroll">
           <p className="ep-eyebrow">{event.date.replace(", ", " · ")}</p>

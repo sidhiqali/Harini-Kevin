@@ -4,12 +4,12 @@ PRODID:-//Harini & Kevin//Wedding//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:wedding-2026@harini-kevin-wedding
-DTSTAMP:20261030T000000Z
+UID:wedding-bride-2026@harini-kevin-wedding
+DTSTAMP:20261106T000000Z
 DTSTART:20261205T103000Z
 DTEND:20261205T140000Z
 SUMMARY:The Wedding · Harini & Kevin
-LOCATION:Hiravati Hall\, Santacruz\, Mumbai
+LOCATION:Hiravati Banquet Hall\, Santacruz West\, near Podar School
 DESCRIPTION:Baraat welcome 4:00 PM · Hast Melap 5:30 PM. Dress code: Indian Traditional
 BEGIN:VALARM
 ACTION:DISPLAY

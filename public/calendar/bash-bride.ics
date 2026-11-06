@@ -4,12 +4,12 @@ PRODID:-//Harini & Kevin//Wedding//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:bash-2026@harini-kevin-wedding
-DTSTAMP:20261030T000000Z
+UID:bash-bride-2026@harini-kevin-wedding
+DTSTAMP:20261106T000000Z
 DTSTART:20261204T133000Z
 DTEND:20261204T180000Z
 SUMMARY:Pre Wedding Bash · Harini & Kevin
-LOCATION:Mogra Hall\, Rajiv Gandhi College
+LOCATION:Mogra Banquet\, Rajiv Gandhi College\, Versova Juhu
 DESCRIPTION:7:00 PM onwards followed by dinner. Dress code: Suits & Shimmer
 BEGIN:VALARM
 ACTION:DISPLAY

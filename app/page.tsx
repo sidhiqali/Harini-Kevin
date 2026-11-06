@@ -9,47 +9,67 @@ import {
   useState,
 } from "react";
 
-// Times are IST; the same slots live in public/calendar/*.ics for Apple and Outlook. Defaults are Harini's side.
-const HARINI_EVENTS = [
-  {
-    name: "Pre Wedding Bash",
-    date: "Friday, 4 December 2026",
-    time: "7:00 PM onwards · followed by dinner",
-    venue: "Mogra Hall",
-    area: "Rajiv Gandhi College",
-    theme: "Dress code: Suits & Shimmer",
-    note: "Join us for an unforgettable celebration, an evening of rhythm, a touch of glamour and a dance floor full of memories.",
-    hostedBy: "Alpa & Hasit Mehta · Maitri & Pratik Shah",
-    schedule: [["Celebration begins", "7:00 PM"], ["Dinner", "to follow"]],
-    look: "night",
-    couple: "/assets/bash-twirl.mp4",
-    slug: "bash",
-    start: "2026-12-04T19:00",
-    end: "2026-12-04T23:30",
-  },
-  {
-    name: "The Wedding",
-    date: "Saturday, 5 December 2026",
-    time: "Baraat welcome 4:00 PM · Hast Melap 5:30 PM",
-    venue: "Hiravati Hall",
-    area: "Santacruz, Mumbai",
-    theme: "Dress code: Indian Traditional",
-    note: "With so much love, joy and gratitude in our hearts, we invite you to celebrate our marriage as we hold hands in a lifetime of friendship.",
-    schedule: [["Baraat welcome", "4:00 PM"], ["Hast Melap", "5:30 PM"]],
-    look: "ivory",
-    couple: "/assets/wedding-couple.webp",
-    slug: "wedding",
-    start: "2026-12-05T16:00",
-    end: "2026-12-05T19:30",
-  },
+// Each of the six guest links is its own Vercel project with VITE_SIDE (bride|groom) and VITE_INVITE (prewedding-wedding-reception|wedding-reception|reception).
+// vite.config.ts writes __SIDE__/__INVITE__ in as literals, so a link's bundle drops events it isn't invited to.
+// With neither set (local dev, the test site) they read ?side= and ?k= so all six can be checked from one build.
+const SIDE = __SIDE__;
+const INVITE = __INVITE__;
+const GROOM = __SIDE__ === "groom";
+
+const BRIDE = { name: "Harini", parents: "Mrs. Manisha & Mr. Vimal Mehta" };
+const GROOM_PERSON = { name: "Kevin", parents: "Mrs. Minal & Mr. Jayesh Chheda" };
+const [FIRST, SECOND] = GROOM ? [GROOM_PERSON, BRIDE] : [BRIDE, GROOM_PERSON];
+const COUPLE = `${FIRST.name} & ${SECOND.name}`;
+// Guest links get this from vite.config.ts at build time; the test build switches sides at runtime.
+if (GROOM) document.title = document.title.replace("Harini & Kevin", COUPLE);
+
+const BASH_VENUE = { venue: "Mogra Banquet", area: "Rajiv Gandhi College, Versova Juhu" };
+const HIRAVATI = { venue: "Hiravati Banquet Hall", area: "Santacruz West, near Podar School" };
+
+// Times are IST; the matching slots live in public/calendar/<event>-<side>.ics for Apple and Outlook.
+const EVENTS = [
+  ...(__INVITE__ === "prewedding-wedding-reception"
+    ? [{
+        name: "Pre Wedding Bash",
+        date: "Friday, 4 December 2026",
+        time: "7:00 PM onwards · followed by dinner",
+        ...BASH_VENUE,
+        theme: "Dress code: Suits & Shimmer",
+        note: "Join us for an unforgettable celebration, an evening of rhythm, a touch of glamour and a dance floor full of memories.",
+        hostedBy: __SIDE__ === "groom" ? "Janvi Chheda" : "Alpa & Hasit Mehta · Maitri & Pratik Shah",
+        schedule: [["Celebration begins", "7:00 PM"], ["Dinner", "to follow"]],
+        look: "night",
+        couple: "/assets/bash-twirl.mp4",
+        slug: "bash",
+        start: "2026-12-04T19:00",
+        end: "2026-12-04T23:30",
+      }]
+    : []),
+  ...(__INVITE__ !== "reception"
+    ? [{
+        name: "The Wedding",
+        date: "Saturday, 5 December 2026",
+        time: __SIDE__ === "groom" ? "Baraat 2:30 PM from home · Hast Melap 5:30 PM" : "Baraat welcome 4:00 PM · Hast Melap 5:30 PM",
+        ...HIRAVATI,
+        theme: "Dress code: Indian Traditional",
+        note: "With so much love, joy and gratitude in our hearts, we invite you to celebrate our marriage as we hold hands in a lifetime of friendship.",
+        hostedBy: "",
+        schedule: __SIDE__ === "groom" ? [["Baraat from home", "2:30 PM"], ["Hast Melap", "5:30 PM"]] : [["Baraat welcome", "4:00 PM"], ["Hast Melap", "5:30 PM"]],
+        look: "ivory",
+        couple: "/assets/wedding-couple.webp",
+        slug: "wedding",
+        start: __SIDE__ === "groom" ? "2026-12-05T14:30" : "2026-12-05T16:00",
+        end: "2026-12-05T19:30",
+      }]
+    : []),
   {
     name: "The Reception",
     date: "Saturday, 5 December 2026",
     time: "7:30 PM onwards · followed by dinner",
-    venue: "Hiravati Hall",
-    area: "Santacruz, Mumbai",
+    ...HIRAVATI,
     theme: "",
     note: "Bless us with your presence for our wedding reception.",
+    hostedBy: "",
     schedule: [["Reception", "7:30 PM"], ["Dinner", "to follow"]],
     look: "champagne",
     couple: "/assets/reception-couple.webp",
@@ -57,35 +77,11 @@ const HARINI_EVENTS = [
     start: "2026-12-05T19:30",
     end: "2026-12-05T23:30",
   },
-];
+].map((event) => ({ ...event, calendar: `${event.slug}-${SIDE}` }));
 
-// ?side=kevin: the groom's family hosts the bash and their baraat leaves from home
-const KEVIN_SIDE = new URLSearchParams(window.location.search).get("side") === "kevin";
-const EVENTS = HARINI_EVENTS.map((event) => {
-  if (!KEVIN_SIDE) return { ...event, calendar: event.slug };
-  if (event.slug === "bash") return { ...event, hostedBy: "Janvi Chheda", calendar: event.slug };
-  if (event.slug === "wedding") {
-    return {
-      ...event,
-      time: "Baraat 2:30 PM from home · Hast Melap 5:30 PM",
-      schedule: [["Baraat from home", "2:30 PM"], ["Hast Melap", "5:30 PM"]],
-      start: "2026-12-05T14:30",
-      calendar: "wedding-kevin",
-    };
-  }
-  return { ...event, calendar: event.slug };
-});
-
-// ponytail: ?k= only hides events client-side; anyone editing the URL can switch tier
-const INVITES: Record<string, string[]> = {
-  soiree: ["bash", "wedding", "reception"],
-  vows: ["wedding", "reception"],
-  evening: ["reception"],
-};
-const INCLUDED = INVITES[new URLSearchParams(window.location.search).get("k") ?? ""] ?? INVITES.soiree;
-const GUEST_EVENTS = EVENTS.filter((event) => INCLUDED.includes(event.slug));
+const GUEST_EVENTS = EVENTS;
 const FIRST_EVENT = GUEST_EVENTS[0];
-const TWO_DAYS = INCLUDED.includes("bash");
+const TWO_DAYS = INVITE === "prewedding-wedding-reception";
 const DATE_TEXT = TWO_DAYS ? "4 – 5 December 2026" : "5 December 2026";
 const VENUES = [...new Map(GUEST_EVENTS.map((event) => [event.venue, event])).values()];
 
@@ -97,7 +93,7 @@ const mapsQuery = (event: (typeof EVENTS)[number]) => encodeURIComponent(`${even
 function googleCalendarUrl(event: (typeof EVENTS)[number]) {
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: `${event.name} · Harini & Kevin`,
+    text: `${event.name} · ${COUPLE}`,
     dates: [event.start, event.end].map((t) => `${t.replace(/[-:]/g, "")}00`).join("/"),
     ctz: "Asia/Kolkata",
     location: `${event.venue}, ${event.area}`,
@@ -137,6 +133,36 @@ function Twinkles({ count }: { count: number }) {
   return (
     <div className="twinkle-field" aria-hidden="true">
       {Array.from({ length: count }, (_, index) => <i key={index} style={{ left: `${(index * 37) % 100}%`, top: `${(index * 53) % 100}%`, animationDelay: `${(index % 9) * 0.31}s` }} />)}
+    </div>
+  );
+}
+
+const PETALS = ["red", "pink", "gold"];
+
+// Fixed pseudo-random spread (golden-ratio steps) so renders stay pure and every guest sees the same fall.
+function WeddingPetals() {
+  return (
+    <div className="wedding-petals" aria-hidden="true">
+      {Array.from({ length: 16 }, (_, index) => {
+        const r = (index * 0.618034) % 1;
+        return (
+          <img
+            key={index}
+            src={`/assets/petal-${PETALS[index % 3]}.webp`}
+            alt=""
+            style={{
+              left: `${(index * 61.8) % 100}%`,
+              width: 16 + Math.round(r * 18),
+              opacity: 0.6 + r * 0.35,
+              animationDuration: `${11 + r * 9}s`,
+              animationDelay: `${-(index * 1.37) % 20}s`,
+              ["--drift" as string]: `${Math.round(-50 + r * 100)}px`,
+              ["--spin" as string]: `${200 + Math.round(r * 420)}deg`,
+            }}
+          />
+        );
+      })}
+      <Twinkles count={18} />
     </div>
   );
 }
@@ -411,12 +437,13 @@ const MUSIC = "/assets/wedding-music.m4a";
 let music: HTMLAudioElement | null = null;
 
 // iOS only lets audio start from inside the tap handler, so the envelope tap calls this directly.
+// Test builds (no guest-link env) stay silent on open; the music button still plays it.
 function startMusic() {
   if (music) return;
   const audio = new Audio(loadedUrls.get(MUSIC) ?? MUSIC);
   audio.loop = true;
   audio.volume = 0.45;
-  audio.play().catch(() => undefined);
+  if (__GUEST_LINK__) audio.play().catch(() => undefined);
   music = audio;
 }
 
@@ -542,9 +569,9 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
       <div className="envelope-title">
         <Fleur className="env-fleur" />
         <p className="env-ruled">The wedding of</p>
-        <p className="env-script"><Sprig />Harini</p>
+        <p className="env-script"><Sprig />{FIRST.name}</p>
         <p className="env-ruled is-and">and</p>
-        <p className="env-script"><Sprig />Kevin</p>
+        <p className="env-script"><Sprig />{SECOND.name}</p>
       </div>
       <Fleur className="env-drop" />
       <p className={`envelope-cta ${ready ? "is-ready" : ""}`}>
@@ -599,12 +626,12 @@ function Hero({ live }: { live: boolean }) {
         onEnded={onEnded}
       />
       <div className="video-hero-copy">
-        <p className="vh-eyebrow hero-rise">Together with their families</p>
+        <p className="vh-eyebrow hero-rise">With great joy</p>
         <span className="vh-ornament hero-rise" aria-hidden="true"><i />✦<i /></span>
         <h1 className="vh-names hero-rise">
-          <span>Harini</span>
+          <span>{FIRST.name}</span>
           <b>&amp;</b>
-          <span>Kevin</span>
+          <span>{SECOND.name}</span>
         </h1>
         <span className="vh-ornament hero-rise" aria-hidden="true"><i />✦<i /></span>
         <p className="vh-invite hero-rise">invite you to celebrate their wedding</p>
@@ -636,12 +663,12 @@ function Blessings() {
         </div>
         <div className="hero-name">
           <p>With the heartfelt blessings of</p>
-          <p>Mrs. Manisha &amp; Mr. Vimal Mehta</p>
-          <p>Mrs. Minal &amp; Mr. Jayesh Chheda</p>
+          <p>{FIRST.parents}</p>
+          <p>{SECOND.parents}</p>
         </div>
         <img className="blessing-flourish" src="/assets/flourish-wide.webp" alt="" aria-hidden="true" />
         <p className="hero-quote">
-          “Two souls, one heart, woven by destiny — request the joy of your presence as we begin our forever.”
+          “Two people, woven by destiny, request the joy of your presence as we begin our forever.”
         </p>
       </div>
     </section>
@@ -746,7 +773,7 @@ function Countdown() {
           <>
             <p className="eyebrow">Just married</p>
             <div className="countdown-card wedding-day-card">
-              <p className="wedding-day-line">Harini &amp; Kevin</p>
+              <p className="wedding-day-line">{COUPLE}</p>
               <p>Thank you for being part of our story. Your love and blessings made it unforgettable.</p>
             </div>
           </>
@@ -841,6 +868,13 @@ function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enable
     <article className={`ep ep-${event.look}`} id={`event-${event.slug}`}>
       {event.look === "night" && <Twinkles count={34} />}
       {event.look === "night" && <BashDecor />}
+      {event.look === "ivory" && (
+        <>
+          <img className="wedding-corner is-l" src="/assets/wedding-corner-l.webp" alt="" aria-hidden="true" />
+          <img className="wedding-corner is-r" src="/assets/wedding-corner-r.webp" alt="" aria-hidden="true" />
+          <WeddingPetals />
+        </>
+      )}
       <div className="ep-inner">
         <div className="ep-copy reveal-on-scroll">
           <p className="ep-eyebrow">{event.date.replace(", ", " · ")}</p>
@@ -854,7 +888,7 @@ function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enable
           <img className="ep-flourish" src="/assets/flourish-wide.webp" alt="" aria-hidden="true" />
           <p className="ep-venue">{event.venue}<span>{event.area}</span></p>
           {event.theme && <p className="ep-dress">{event.theme}</p>}
-          {"hostedBy" in event && event.hostedBy && <p className="ep-hosts"><span>With love</span>{event.hostedBy}</p>}
+          {event.hostedBy && <p className="ep-hosts"><span>With love</span>{event.hostedBy}</p>}
           <div className="ep-actions">
             <details className="event-calendar">
               <summary>＋ Add to calendar</summary>
@@ -869,7 +903,7 @@ function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enable
         {event.couple.endsWith(".mp4") ? (
           <PanelVideo src={event.couple} enabled={enabled} />
         ) : (
-          <img className="ep-couple reveal-on-scroll" src={event.couple} alt={`Harini and Kevin, ${event.name}`} loading="lazy" />
+          <img className="ep-couple reveal-on-scroll" src={event.couple} alt={`${FIRST.name} and ${SECOND.name}, ${event.name}`} loading="lazy" />
         )}
       </div>
     </article>
@@ -922,7 +956,7 @@ function ThankYou() {
         <h2>Thank You</h2>
         <Divider light />
         <p className="thank-msg">To every soul who has loved us, prayed for us and journeyed with us — your presence is a blessing we will carry forever.</p>
-        <p className="thank-sign">Harini <b>&amp;</b> Kevin</p>
+        <p className="thank-sign">{FIRST.name} <b>&amp;</b> {SECOND.name}</p>
         {RSVP_CONTACTS.length > 0 && <div className="rsvp">
           <Divider light />
           <h3>Kindly RSVP</h3>

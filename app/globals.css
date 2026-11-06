@@ -2245,3 +2245,62 @@ html.is-sealed body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .bash-ball .halo, .bash-ball .glint, .bash-ball .beam { animation: none; }
 }
+
+/* Wedding panel: Nishant-style falling petals plus gold sparkles in the upper half, behind copy and couple. */
+.wedding-petals {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  container-type: size;
+  pointer-events: none;
+}
+.wedding-petals > img {
+  position: absolute;
+  top: -40px;
+  height: auto;
+  animation: wedding-petal-fall linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes wedding-petal-fall {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  8% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--drift), calc(100cqh + 40px), 0) rotate(var(--spin)); }
+}
+.wedding-petals .twinkle-field { inset: 4% 6% 48%; }
+.wedding-petals .twinkle-field i { background: #d9b46a; box-shadow: 0 0 10px rgba(217, 180, 106, .9); }
+.ep-ivory .ep-inner { z-index: 3; }
+@media (prefers-reduced-motion: reduce) {
+  .wedding-petals > img { display: none; }
+}
+/* laptop draws the art via ::after at z-index 1; keep petals above the art but under the copy */
+.ep-ivory .ep-copy { position: relative; z-index: 4; }
+
+/* Phones crop the art's side florals (cover on a tall panel), so the same sprays, cut from the art, are pinned to the corners. */
+.wedding-corner { display: none; }
+@media (max-width: 899px) {
+  .wedding-corner {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    display: block;
+    width: clamp(84px, 25vw, 124px);
+    height: auto;
+    pointer-events: none;
+  }
+  .wedding-corner.is-l { left: 0; }
+  .wedding-corner.is-r { right: 0; }
+}
+@media (max-width: 899px) {
+  .wedding-corner { width: clamp(76px, 22vw, 112px); }
+  .wedding-corner.is-l { transform: translate(-16%, -6%); }
+  .wedding-corner.is-r { transform: translate(16%, -6%); }
+}
+/* inset the widest copy so the corner sprays never reach the text */
+@media (max-width: 899px) {
+  .ep-ivory .ep-note { padding-inline: 7vw; }
+}
+@media (max-width: 359px) {
+  .wedding-corner { width: 62px; }
+}

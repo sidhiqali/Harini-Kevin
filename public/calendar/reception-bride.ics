@@ -4,12 +4,12 @@ PRODID:-//Harini & Kevin//Wedding//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:reception-2026@harini-kevin-wedding
-DTSTAMP:20261030T000000Z
+UID:reception-bride-2026@harini-kevin-wedding
+DTSTAMP:20261106T000000Z
 DTSTART:20261205T140000Z
 DTEND:20261205T180000Z
 SUMMARY:The Reception · Harini & Kevin
-LOCATION:Hiravati Hall\, Santacruz\, Mumbai
+LOCATION:Hiravati Banquet Hall\, Santacruz West\, near Podar School
 DESCRIPTION:7:30 PM onwards followed by dinner
 BEGIN:VALARM
 ACTION:DISPLAY

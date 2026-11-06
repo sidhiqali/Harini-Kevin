@@ -2304,3 +2304,10 @@ html.is-sealed body { overflow: hidden; }
 @media (max-width: 359px) {
   .wedding-corner { width: 62px; }
 }
+
+.envelope:not(.has-fonts) .envelope-title,
+.envelope:not(.has-fonts) .env-drop,
+.envelope:not(.has-fonts) .envelope-cta { opacity: 0; }
+.envelope-title,
+.env-drop,
+.envelope-cta { transition: opacity .7s ease; }

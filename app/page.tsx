@@ -521,6 +521,22 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
   const [percent, setPercent] = useState(0);
   const [ready, setReady] = useState(false);
   const [stage, setStage] = useState<"closed" | "opening" | "fading">("closed");
+  const [fontsReady, setFontsReady] = useState(false);
+
+  // Web fonts swap in late; showing the names before then makes them jump from the fallback face.
+  // fonts.load() resolves empty while the Google stylesheet is still in flight, so poll until each face really loads.
+  useEffect(() => {
+    const faces = ['400 1em "Beau Rivage"', '500 1em "Cinzel"', '600 1em "Cinzel"', '400 1em "Ovo"'];
+    const started = performance.now();
+    let timer = 0;
+    const check = async () => {
+      const loaded = await Promise.all(faces.map((face) => document.fonts.load(face).then((list) => list.length > 0, () => false)));
+      if (loaded.every(Boolean) || performance.now() - started > 8000) setFontsReady(true);
+      else timer = window.setTimeout(check, 120);
+    };
+    check();
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Reloads otherwise restore the old scroll position, so the envelope would open mid-page
@@ -554,7 +570,7 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
     if (!ready || stage !== "closed" || !video) return;
     setStage("opening");
     startMusic();
-    video.muted = false;
+    video.muted = true;
     video.play().catch(finish);
   };
 
@@ -564,8 +580,8 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
   };
 
   return (
-    <div className={`envelope is-${stage}`} onClick={open} role="button" tabIndex={0} aria-label="Open the invitation" onKeyDown={(event) => (event.key === "Enter" || event.key === " ") && open()}>
-      <video ref={videoRef} className="envelope-media" poster="/assets/envelope-poster.jpg" playsInline preload="none" aria-hidden="true" onTimeUpdate={onTimeUpdate} onEnded={finish} />
+    <div className={`envelope is-${stage} ${fontsReady ? "has-fonts" : ""}`} onClick={open} role="button" tabIndex={0} aria-label="Open the invitation" onKeyDown={(event) => (event.key === "Enter" || event.key === " ") && open()}>
+      <video ref={videoRef} className="envelope-media" poster="/assets/envelope-poster.jpg" muted playsInline preload="none" aria-hidden="true" onTimeUpdate={onTimeUpdate} onEnded={finish} />
       <div className="envelope-title">
         <Fleur className="env-fleur" />
         <p className="env-ruled">The wedding of</p>

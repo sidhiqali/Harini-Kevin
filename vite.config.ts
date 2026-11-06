@@ -18,6 +18,9 @@ function guestLink(side: string, invite: string | undefined): Plugin {
       outDir = config.build.outDir;
     },
     transformIndexHtml(html) {
+      // Link previews need an absolute image URL; Vercel provides each project's production domain at build time.
+      const host = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+      html = html.replace("%OG_IMAGE%", `${host ? `https://${host}` : ""}/og-${side}.jpg`);
       return side === "groom" ? html.replaceAll("Harini &amp; Kevin", "Kevin &amp; Harini").replaceAll("Harini and Kevin", "Kevin and Harini") : html;
     },
     closeBundle() {

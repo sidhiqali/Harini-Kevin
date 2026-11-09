@@ -23,7 +23,7 @@ const COUPLE = `${FIRST.name} & ${SECOND.name}`;
 // Guest links get this from vite.config.ts at build time; the test build switches sides at runtime.
 if (GROOM) document.title = document.title.replace("Harini & Kevin", COUPLE);
 
-const BASH_VENUE = { venue: "Mogra Banquet", area: "Rajiv Gandhi College, Versova Juhu", parking: "" };
+const BASH_VENUE = { venue: "Mogra Banquet", area: "Rajiv Gandhi College, Versova Juhu", parking: "Valet parking available" };
 const HIRAVATI = { venue: "Hiravati Hall", area: "Near Podar School, Santacruz West", parking: "Valet parking available" };
 
 // Times are IST; the matching slots live in public/calendar/<event>-<side>.ics for Apple and Outlook.

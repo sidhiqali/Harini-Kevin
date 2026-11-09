@@ -9,8 +9,8 @@ DTSTAMP:20261106T000000Z
 DTSTART:20261205T140000Z
 DTEND:20261205T180000Z
 SUMMARY:The Reception · Harini & Kevin
-LOCATION:Hiravati Banquet Hall\, Santacruz West\, near Podar School
-DESCRIPTION:7:30 PM onwards followed by dinner
+LOCATION:Hiravati Hall\, near Podar School\, Santacruz West
+DESCRIPTION:7:30 PM onwards followed by dinner. Valet parking available.
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Tomorrow: The Reception

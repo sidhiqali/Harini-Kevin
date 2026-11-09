@@ -23,8 +23,8 @@ const COUPLE = `${FIRST.name} & ${SECOND.name}`;
 // Guest links get this from vite.config.ts at build time; the test build switches sides at runtime.
 if (GROOM) document.title = document.title.replace("Harini & Kevin", COUPLE);
 
-const BASH_VENUE = { venue: "Mogra Banquet", area: "Rajiv Gandhi College, Versova Juhu" };
-const HIRAVATI = { venue: "Hiravati Banquet Hall", area: "Santacruz West, near Podar School" };
+const BASH_VENUE = { venue: "Mogra Banquet", area: "Rajiv Gandhi College, Versova Juhu", parking: "" };
+const HIRAVATI = { venue: "Hiravati Hall", area: "Near Podar School, Santacruz West", parking: "Valet parking available" };
 
 // Times are IST; the matching slots live in public/calendar/<event>-<side>.ics for Apple and Outlook.
 const EVENTS = [
@@ -720,7 +720,6 @@ function SaveTheDate() {
         {dated ? (
           <div className="std-after">
             <Countdown />
-            <p className="std-venues">{VENUES.map((venue) => venue.venue).join(" · ")} · Mumbai</p>
           </div>
         ) : (
           <p className="std-hint">Scratch the gold to unveil the magic</p>
@@ -902,7 +901,7 @@ function EventPanel({ event, enabled }: { event: (typeof EVENTS)[number]; enable
             ))}
           </dl>
           <img className="ep-flourish" src="/assets/flourish-wide.webp" alt="" aria-hidden="true" />
-          <p className="ep-venue">{event.venue}<span>{event.area}</span></p>
+          <p className="ep-venue">{event.venue}<span>{event.area}</span>{event.parking && <span className="ep-parking">{event.parking}</span>}</p>
           {event.theme && <p className="ep-dress">{event.theme}</p>}
           {event.hostedBy && <p className="ep-hosts"><span>With love</span>{event.hostedBy}</p>}
           <div className="ep-actions">
@@ -950,6 +949,7 @@ function Venue() {
               <p className="venue-events">{GUEST_EVENTS.filter((event) => event.venue === venue.venue).map((event) => event.name.replace(/^The /, "")).join(" · ")}</p>
               <h3>{venue.venue}</h3>
               <p className="venue-area">{venue.area}</p>
+              {venue.parking && <p className="venue-parking">{venue.parking}</p>}
               <p className="venue-date">{venue.date}</p>
               <a className="ep-map" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery(venue)}`}>⌖ Get directions</a>
             </article>
@@ -993,6 +993,7 @@ function ThankYou() {
           </ul>
         </div>}
         <small>{DATE_TEXT} · Mumbai</small>
+        <p className="thank-only-blessings">Only blessings</p>
       </div>
     </section>
   );

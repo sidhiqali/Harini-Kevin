@@ -9,8 +9,8 @@ DTSTAMP:20261106T000000Z
 DTSTART:20261205T090000Z
 DTEND:20261205T140000Z
 SUMMARY:The Wedding · Kevin & Harini
-LOCATION:Hiravati Banquet Hall\, Santacruz West\, near Podar School
-DESCRIPTION:Baraat 2:30 PM from home · Hast Melap 5:30 PM. Dress code: Indian Traditional
+LOCATION:Hiravati Hall\, near Podar School\, Santacruz West
+DESCRIPTION:Baraat 2:30 PM from home · Hast Melap 5:30 PM. Dress code: Indian Traditional. Valet parking available.
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Tomorrow: The Wedding

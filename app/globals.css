@@ -2311,3 +2311,8 @@ html.is-sealed body { overflow: hidden; }
 .envelope-title,
 .env-drop,
 .envelope-cta { transition: opacity .7s ease; }
+
+.ep-venue .ep-parking,
+.venue-parking { font-style: italic; opacity: .85; }
+.venue-parking { margin: .2rem 0 0; color: #5a1a24; font-family: "Ovo", Georgia, serif; font-size: .92rem; }
+.thank-you-inner > p.thank-only-blessings { margin: 1.1rem 0 0; color: #ead08f; font-family: "Ovo", Georgia, serif; font-size: 1.15rem; font-style: normal; font-weight: 700; letter-spacing: .04em; }

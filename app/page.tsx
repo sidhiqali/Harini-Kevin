@@ -644,6 +644,7 @@ function Hero({ live }: { live: boolean }) {
       <div className="video-hero-copy">
         <p className="vh-eyebrow hero-rise">With great joy</p>
         <span className="vh-ornament hero-rise" aria-hidden="true"><i />✦<i /></span>
+        <p className="vh-families hero-rise">The families of</p>
         <h1 className="vh-names hero-rise">
           <span>{FIRST.name}</span>
           <b>&amp;</b>

@@ -2316,3 +2316,6 @@ html.is-sealed body { overflow: hidden; }
 .venue-parking { font-style: italic; opacity: .85; }
 .venue-parking { margin: .2rem 0 0; color: #5a1a24; font-family: "Ovo", Georgia, serif; font-size: .92rem; }
 .thank-you-inner > p.thank-only-blessings { margin: 1.1rem 0 0; color: #ead08f; font-family: "Ovo", Georgia, serif; font-size: 1.15rem; font-style: normal; font-weight: 700; letter-spacing: .04em; }
+
+.vh-families { margin: .3rem 0 -.2rem; color: #5a1a24; font-family: "Cormorant Garamond", serif; font-size: clamp(1rem, 2.3svh, 1.3rem); font-style: italic; }
+.video-hero.is-live .vh-families { animation-delay: .95s; }
